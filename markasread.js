@@ -40,6 +40,27 @@ var fixCampaignUrl = function (url) {
 	return url;
 };
 
+var fixAmazonUrl = function (url) {
+	var data = url.match(/amazon\.com\/[^\/]+\/dp\/([0-9A-Z]+)/);
+
+	if (data !== null) {
+		var template = 'https://www.amazon.com/a/dp/{{CODE}}';
+		var newurl = template.replace('{{CODE}}', data[1]);
+
+		if (window.console) {
+			console.log(
+				'MarkAsRead fix: %c' +
+				url + '%c -> %c' + newurl,
+				'color:red', '', 'color:green'
+			);
+		}
+
+		url = newurl;
+	}
+
+	return url;
+};
+
 var fixMaliciousUrls = function () {
 	var links = document.links;
 
@@ -48,6 +69,7 @@ var fixMaliciousUrls = function () {
 	for (var key in links) {
 		if (typeof links[key] === 'object') {
 			links[key].href = fixCampaignUrl(links[key].href);
+			links[key].href = fixAmazonUrl(links[key].href);
 		}
 	}
 };

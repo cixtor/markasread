@@ -20,40 +20,34 @@ var debug = function (text) {
 	}
 };
 
-var getMaliciousRules = function () {
-	return [
-		/* Campaign tracking params */
-		new RegExp('([&\\?]?utm_[a-z_]+=.*)'),
-	];
+var fixCampaignUrl = function (url) {
+	var data = url.match(/([&\?]?utm_[a-z_]+=.*)/);
+
+	if (data !== null) {
+		var newurl = url.replace(data[1], '');
+
+		if (window.console) {
+			console.log(
+				'MarkAsRead fix: %c' +
+				url + '%c -> %c' + newurl,
+				'color:red', '', 'color:green'
+			);
+		}
+
+		url = newurl;
+	}
+
+	return url;
 };
 
 var fixMaliciousUrls = function () {
 	var links = document.links;
-	var href, regex, match, newhref;
-	var malicious = getMaliciousRules();
 
 	debug('MarkAsRead found ' + links.length + ' links');
 
 	for (var key in links) {
 		if (typeof links[key] === 'object') {
-			for (var car in malicious) {
-				href = links[key].href;
-				regex = malicious[car];
-				match = href.match(regex);
-
-				if (match !== null) {
-					newhref = href.replace(match[1], '');
-					links[key].href = newhref;
-
-					if (window.console) {
-						console.log(
-							'MarkAsRead fix: %c' +
-							href + '%c -> %c' + newhref,
-							'color:red', '', 'color:green'
-						);
-					}
-				}
-			}
+			links[key].href = fixCampaignUrl(links[key].href);
 		}
 	}
 };

@@ -1,6 +1,7 @@
 /* global debug */
 /* global chrome */
 /* global getActionIcon */
+/* global getDocumentLinks */
 /* global getImportantUrls */
 
 /**
@@ -46,6 +47,10 @@ var markAsRead = function () {
 
 /* Display number of important links in the badge */
 setTimeout(function () {
+	/* Fix all URLs */
+	getDocumentLinks(true);
+
+	/* Count important URLs */
 	chrome.runtime.sendMessage({
 		scope: 'interface',
 		visited: !globalStatus,

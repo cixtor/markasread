@@ -1,3 +1,5 @@
+/* jshint forin: false */
+
 /**
  * Mark links as viewed
  *
@@ -18,10 +20,52 @@ var debug = function (text) {
 	}
 };
 
-var getDocumentLinks = function () {
+var getMaliciousRules = function () {
+	return [
+		/* Campaign tracking params */
+		new RegExp('([&\\?]?utm_[a-z_]+=.*)'),
+	];
+};
+
+var fixMaliciousUrls = function () {
+	var links = document.links;
+	var href, regex, match, newhref;
+	var malicious = getMaliciousRules();
+
+	debug('MarkAsRead found ' + links.length + ' links');
+
+	for (var key in links) {
+		if (typeof links[key] === 'object') {
+			for (var car in malicious) {
+				href = links[key].href;
+				regex = malicious[car];
+				match = href.match(regex);
+
+				if (match !== null) {
+					newhref = href.replace(match[1], '');
+					links[key].href = newhref;
+
+					if (window.console) {
+						console.log(
+							'MarkAsRead fix: %c' +
+							href + '%c -> %c' + newhref,
+							'color:red', '', 'color:green'
+						);
+					}
+				}
+			}
+		}
+	}
+};
+
+var getDocumentLinks = function (fixUrls) {
 	if (document.getElementById('siteTable_organic')) {
 		debug('Removing Reddit organic section');
 		document.getElementById('siteTable_organic').remove()
+	}
+
+	if (fixUrls === true) {
+		fixMaliciousUrls();
 	}
 
 	return document.links;

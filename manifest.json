@@ -15,7 +15,7 @@
 		"*://www.designernews.co/*"
 	],
 	"background": {
-		"scripts": ["background.js"]
+		"scripts": ["markasread.js", "background.js"]
 	},
 	"browser_action": {
 		"default_title": "Mark as Read",
@@ -29,7 +29,7 @@
 		}
 	},
 	"content_scripts": [{
-		"js": ["markasread.js"],
+		"js": ["markasread.js", "contentscript.js"],
 		"matches": [
 			"*://www.reddit.com/*",
 			"*://news.ycombinator.com/*",

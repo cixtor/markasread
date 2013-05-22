@@ -47,6 +47,20 @@ var processInterfaceAction = function (request, sender) {
 	}
 };
 
+var setBadgeBackground = function (request, sender) {
+	if (!request.visited) {
+		chrome.browserAction.setBadgeBackgroundColor({
+			tabId: sender.tab.id,
+			color: '#AF3A3A'
+		});
+	} else {
+		chrome.browserAction.setBadgeBackgroundColor({
+			tabId: sender.tab.id,
+			color: '#5D77BD'
+		});
+	}
+};
+
 chrome.browserAction.onClicked.addListener(function (tab) {
 	chrome.tabs.executeScript(tab.id, {
 		'code': 'markAsRead();'

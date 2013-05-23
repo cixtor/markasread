@@ -34,6 +34,19 @@ var processHistoryAction = function (request, sender) {
 	}
 };
 
+var processInterfaceAction = function (request, sender) {
+	var total = request.urls.length;
+
+	if (total > 0) {
+		chrome.browserAction.setBadgeText({
+			tabId: sender.tab.id,
+			text: (total).toString()
+		});
+	} else {
+		chrome.browserAction.disable(sender.tab.id);
+	}
+};
+
 chrome.browserAction.onClicked.addListener(function (tab) {
 	chrome.tabs.executeScript(tab.id, {
 		'code': 'markAsRead();'

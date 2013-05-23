@@ -43,3 +43,12 @@ var markAsRead = function () {
 		debug('MarkAsRead (err): no_important_links');
 	}
 };
+
+/* Display number of important links in the badge */
+setTimeout(function () {
+	chrome.runtime.sendMessage({
+		scope: 'interface',
+		visited: !globalStatus,
+		urls: getImportantUrls()
+	});
+}, 5);

@@ -1,6 +1,3 @@
-/* global chrome */
-/* jshint forin: false */
-
 /**
  * Mark links as viewed
  *
@@ -14,8 +11,6 @@
  * appropriate links as visited, second time will mark them as not visited and
  * so on.
  */
-
-var globalStatus = false; /* Whether to add or delete */
 
 var debug = function (text) {
 	if (window.console) {
@@ -53,7 +48,21 @@ var isImportantLink = function (link) {
 	return false;
 };
 
-var getIcon = function (status) {
+var getImportantUrls = function () {
+	var links = getDocumentLinks();
+	var total = links.length;
+	var urls = [];
+
+	for (var key = 0; key < total; key++) {
+		if (isImportantLink(links[key])) {
+			urls.push(links[key].href);
+		}
+	}
+
+	return urls;
+};
+
+var getActionIcon = function (status) {
 	var color = (status ? 'blue' : 'red');
 
 	return {
@@ -64,34 +73,4 @@ var getIcon = function (status) {
 		'48': 'icons/' + color + '/48.png',
 		'128': 'icons/' + color + '/128.png'
 	};
-}
-
-var markAsRead = function () {
-	var urls = [];
-	var links = getDocumentLinks();
-	var total = links.length;
-
-	for (var key = 0; key < total; key++) {
-		if (isImportantLink(links[key])) {
-			urls.push(links[key].href);
-		}
-	}
-
-	if (urls.length > 0) {
-		if (globalStatus) {
-			debug('MarkAsRead (add): ' + urls.length);
-		} else {
-			debug('MarkAsRead (del): ' + urls.length);
-		}
-
-		chrome.runtime.sendMessage({
-			urls: urls,
-			visited: globalStatus,
-			browserIcon: getIcon(globalStatus)
-		});
-
-		globalStatus = !globalStatus;
-	} else {
-		debug('MarkAsRead (err): no_important_links');
-	}
 };

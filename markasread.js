@@ -53,6 +53,19 @@ var isImportantLink = function (link) {
 	return false;
 };
 
+var getIcon = function (status) {
+	var color = (status ? 'blue' : 'red');
+
+	return {
+		'16': 'icons/' + color + '/16.png',
+		'19': 'icons/' + color + '/19.png',
+		'32': 'icons/' + color + '/32.png',
+		'38': 'icons/' + color + '/38.png',
+		'48': 'icons/' + color + '/48.png',
+		'128': 'icons/' + color + '/128.png'
+	};
+}
+
 var markAsRead = function () {
 	var urls = [];
 	var links = getDocumentLinks();

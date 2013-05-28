@@ -52,3 +52,33 @@ var isImportantLink = function (link) {
 
 	return false;
 };
+
+var markAsRead = function () {
+	var urls = [];
+	var links = getDocumentLinks();
+	var total = links.length;
+
+	for (var key = 0; key < total; key++) {
+		if (isImportantLink(links[key])) {
+			urls.push(links[key].href);
+		}
+	}
+
+	if (urls.length > 0) {
+		if (globalStatus) {
+			debug('MarkAsRead (add): ' + urls.length);
+		} else {
+			debug('MarkAsRead (del): ' + urls.length);
+		}
+
+		chrome.runtime.sendMessage({
+			urls: urls,
+			visited: globalStatus,
+			browserIcon: getIcon(globalStatus)
+		});
+
+		globalStatus = !globalStatus;
+	} else {
+		debug('MarkAsRead (err): no_important_links');
+	}
+};

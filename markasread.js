@@ -31,3 +31,24 @@ var getDocumentLinks = function () {
 
 	return document.links;
 };
+
+var isImportantLink = function (link) {
+	var important = {
+		'title': 'https://www.reddit.com/',
+		'hdrlnk': 'https://www.craigslist.org/',
+		'storylink': 'https://news.ycombinator.com/',
+		'montana-item-title': 'https://www.designernews.co/',
+	};
+
+	if (link.className !== undefined) {
+		var classes = link.className.split('\u0020');
+
+		for (var key in classes) {
+			if (important.hasOwnProperty(classes[key])) {
+				return true;
+			}
+		}
+	}
+
+	return false;
+};

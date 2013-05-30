@@ -16,3 +16,18 @@
  */
 
 var globalStatus = false; /* Whether to add or delete */
+
+var debug = function (text) {
+	if (window.console) {
+		console.log(text);
+	}
+};
+
+var getDocumentLinks = function () {
+	if (document.getElementById('siteTable_organic')) {
+		debug('Removing Reddit organic section');
+		document.getElementById('siteTable_organic').remove()
+	}
+
+	return document.links;
+};

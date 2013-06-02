@@ -1,0 +1,48 @@
+{
+	"version": "1.4",
+	"manifest_version": 2,
+	"name": "Mark as Read",
+	"short_name": "Mark as Read",
+	"description": "Mark all the links on page as read with the click of a button",
+	"homepage_url": "https://github.com/cixtor/markasread",
+	"author": "Cixtor",
+	"permissions": [
+		"history",
+		"tabs",
+		"*://www.reddit.com/*",
+		"*://news.ycombinator.com/*",
+		"*://*.craigslist.org/*",
+		"*://www.designernews.co/*"
+	],
+	"background": {
+		"scripts": ["background.js"]
+	},
+	"browser_action": {
+		"default_title": "Mark as Read",
+		"default_icon": {
+			"16": "icons/blue/16.png",
+			"19": "icons/blue/19.png",
+			"32": "icons/blue/32.png",
+			"38": "icons/blue/38.png",
+			"48": "icons/blue/48.png",
+			"128": "icons/blue/128.png"
+		}
+	},
+	"content_scripts": [{
+		"js": ["markasread.js"],
+		"matches": [
+			"*://www.reddit.com/*",
+			"*://news.ycombinator.com/*",
+			"*://*.craigslist.org/*",
+			"*://www.designernews.co/*"
+		]
+	}],
+	"icons": {
+		"16": "icons/blue/16.png",
+		"19": "icons/blue/19.png",
+		"32": "icons/blue/32.png",
+		"38": "icons/blue/38.png",
+		"48": "icons/blue/48.png",
+		"128": "icons/blue/128.png"
+	}
+}

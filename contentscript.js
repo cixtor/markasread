@@ -25,24 +25,25 @@ var markAsRead = function () {
 	var urls = getImportantUrls();
 	var total = urls.length;
 
-	if (total > 0) {
-		if (globalStatus) {
-			debug('MarkAsRead (add): ' + total);
-		} else {
-			debug('MarkAsRead (del): ' + total);
-		}
-
-		chrome.runtime.sendMessage({
-			scope: 'history',
-			visited: globalStatus,
-			browserIcon: getActionIcon(globalStatus),
-			urls: urls
-		});
-
-		globalStatus = !globalStatus;
-	} else {
+	if (total <= 0) {
 		debug('MarkAsRead (err): no_important_links');
+		return;
 	}
+
+	if (globalStatus) {
+		debug('MarkAsRead (add): ' + total);
+	} else {
+		debug('MarkAsRead (del): ' + total);
+	}
+
+	chrome.runtime.sendMessage({
+		scope: 'history',
+		visited: globalStatus,
+		browserIcon: getActionIcon(globalStatus),
+		urls: urls
+	});
+
+	globalStatus = !globalStatus;
 };
 
 /* Display number of important links in the badge */

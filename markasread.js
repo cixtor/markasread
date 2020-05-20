@@ -23,42 +23,42 @@ var debug = function (text) {
 var fixCampaignUrl = function (url) {
 	var data = url.match(/([&\?]?utm_[a-z_]+=.*)/);
 
-	if (data !== null) {
-		var newurl = url.replace(data[1], '');
-
-		if (window.console) {
-			console.log(
-				'MarkAsRead fix: %c' +
-				url + '%c -> %c' + newurl,
-				'color:red', '', 'color:green'
-			);
-		}
-
-		url = newurl;
+	if (data === null) {
+		return url;
 	}
 
-	return url;
+	var newurl = url.replace(data[1], '');
+
+	if (window.console) {
+		console.log(
+			'MarkAsRead fix: %c' +
+			url + '%c -> %c' + newurl,
+			'color:red', '', 'color:green'
+		);
+	}
+
+	return newurl;
 };
 
 var fixAmazonUrl = function (url) {
 	var data = url.match(/amazon\.com\/[^\/]+\/dp\/([0-9A-Z]+)/);
 
-	if (data !== null) {
-		var template = 'https://www.amazon.com/a/dp/{{CODE}}';
-		var newurl = template.replace('{{CODE}}', data[1]);
-
-		if (window.console) {
-			console.log(
-				'MarkAsRead fix: %c' +
-				url + '%c -> %c' + newurl,
-				'color:red', '', 'color:green'
-			);
-		}
-
-		url = newurl;
+	if (data === null) {
+		return url;
 	}
 
-	return url;
+	var template = 'https://www.amazon.com/a/dp/{{CODE}}';
+	var newurl = template.replace('{{CODE}}', data[1]);
+
+	if (window.console) {
+		console.log(
+			'MarkAsRead fix: %c' +
+			url + '%c -> %c' + newurl,
+			'color:red', '', 'color:green'
+		);
+	}
+
+	return newurl;
 };
 
 var fixMaliciousUrls = function () {
